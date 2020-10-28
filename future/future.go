@@ -1,8 +1,8 @@
 package future
 
 import (
-	u "github.com/PankajKataria/go-concurrency/utils"
 	"time"
+	u "github.com/PankajKataria/go-concurrency/utils"
 )
 
 type Future struct {
@@ -25,13 +25,9 @@ func (f *Future) Finished () bool {
 	return f.Task.Status == u.FINISHED; 
 }
 
-func (f *Future) Result (timeout int) ([]interface{}, bool) {
-	if f.Cancelled() == true {
-		return nil, false
-	}
-
+func (f *Future) Result (timeout int) (interface{}, bool) {
 	if f.Cancelled () == false && f.Running() == true {
-		<-time.After(time.Duration(timeout) * time.Second)
+		<-time.After(time.Duration(timeout) * time.Second) // Waiting till the timeout
 	}
 
 	if f.Task.Status == u.FINISHED {

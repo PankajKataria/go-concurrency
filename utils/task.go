@@ -15,8 +15,8 @@ type Task struct {
 	Status int // updates should be atomic
 	Cancelled bool
 	Lock *sync.Mutex
-	Call func() ([]interface{})
-	Result []interface{}
+	Call func() (interface{})
+	Result interface{}
 }
 
 func (t *Task) Cancel () bool {
@@ -36,7 +36,7 @@ func (t *Task) SetStatus (status int) {
 	t.Lock.Unlock()
 }
 
-func NewTask (id int, f func()([]interface{})) Task {
+func NewTask (id int, f func()(interface{})) Task {
 	return 	Task{ 	Id : id,
 					Status : READY,
 					Cancelled : false,
