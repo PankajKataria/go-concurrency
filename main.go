@@ -10,6 +10,6 @@ func main () {
 		time.Sleep(10 * time.Second)
 		return "Hello"
 	})
-	f1.Cancel()
+	f1.Running()
 	ftp.ShutDown()
 }
