@@ -9,6 +9,7 @@ Fun stuff implemented in go
 		time.Sleep(10 * time.Second)
 		return "Hello"
 	})
+	ftp.ShutDown()
 ```
 
 - Functions supported by fixed thread pool 
