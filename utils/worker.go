@@ -24,6 +24,7 @@ func (w *Worker) Run () {
 					task.SetStatus(RUNNING)
 					result = task.Call()
 					task.Result = result
+					task.Done <- true
 					task.SetStatus(FINISHED)
 					fmt.Printf("Worker : %d Finished Running Task %d\n", w.Id, task.Id)	
 				}

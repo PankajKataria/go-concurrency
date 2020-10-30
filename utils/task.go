@@ -17,6 +17,8 @@ type Task struct {
 	Lock *sync.Mutex
 	Call func() (interface{})
 	Result interface{}
+	Done chan bool
+	Parent interface{}
 }
 
 func (t *Task) Cancel () bool {
@@ -42,5 +44,6 @@ func NewTask (id int, f func()(interface{})) Task {
 					Cancelled : false,
 					Lock : new(sync.Mutex),
 					Call : f,
-					Result : nil}
+					Result : nil,
+					Done : make(chan bool, 1)}
 }

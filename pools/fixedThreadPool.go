@@ -22,7 +22,7 @@ func (fTP *FixedThreadPool) Submit (callable func() (interface{})) *f.Future {
 	nt := u.NewTask(fTP.JobsCount, callable) // current Task Object
 	fTP.JobsCount = fTP.JobsCount + 1
 	fTP.JobQueue <- &nt // add task to the worker queue
-	return &f.Future{Task:&nt} // current future Object
+	return &f.Future{&nt,[](func(*f.Future)()){}, nil, new(sync.WaitGroup)} // current future Object
 } 
 func (fTP *FixedThreadPool) ShutDown () {
 	for _, wc := range fTP.DieChan {
