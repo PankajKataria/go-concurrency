@@ -19,8 +19,8 @@ func (w *Worker) Run () {
 			case task := <- *(w.Jobs):
 					task.Execute(w.Id)
 			case <- *((*w).Die):
-				fmt.Printf("Worker %d: Shuting down\n", w.Id)
 				w.Wg.Done()
+				fmt.Printf("Worker %d: Shuting down\n", w.Id)
 				return
 			default:
 		}
