@@ -13,23 +13,13 @@ type  Worker struct {
 }
 
 func (w *Worker) Run () {
+	fmt.Printf("Worker %d: Alive\n", w.Id)
 	for {
 		select { // Attempt at making this non blocking
-			case task := <- *((*w).Jobs):
-				if task.Status == STOPPED { // task Cancelled
-					fmt.Printf("Worker : %d Not Running Task %d\n", w.Id, task.Id)
-				} else {
-					fmt.Printf("Worker : %d Running Task %d\n", w.Id, task.Id)
-					var result interface{}
-					task.SetStatus(RUNNING)
-					result = task.Call()
-					task.Result = result
-					task.Done <- true
-					task.SetStatus(FINISHED)
-					fmt.Printf("Worker : %d Finished Running Task %d\n", w.Id, task.Id)	
-				}
+			case task := <- *(w.Jobs):
+					task.Execute(w.Id)
 			case <- *((*w).Die):
-				fmt.Printf("Worker : %d shuting down\n", w.Id)
+				fmt.Printf("Worker %d: Shuting down\n", w.Id)
 				w.Wg.Done()
 				return
 			default:
