@@ -14,23 +14,29 @@ Fun stuff implemented in go
 
 - Functions supported by fixed thread pool 
 ``` go
-	NewFixedThreadPool(workers int) (*FixedThreadPool)
-	Submit (callable func() (interface{})) *f.Future 
+	NewFixedThreadPool(workers int) ((*FixedThreadPool), error)
+	Submit (callable func() (interface{})) (*f.Future, error)
 	ShutDown () // Graceful shutdown
 ```
 
 - Functions supported by Future
 ``` go
-	f1.Cancel () bool   // Cancel the submitted task
-	f1.Cancelled () bool // Check if the task is cancelled
+	// Check if the task status
+	f1.Cancel () bool
+	f1.Cancelled () bool
 	f1.Running () bool 
 	f1.Finished () bool
-	f1.Result(timeout int) (interface{}, bool) // Get the result if not available wait timeout seconds
+	// Get the result if not available wait timeout seconds
+	f1.Result(timeout ...int) (interface{}, bool) 
+	// Get the exception if any occured
+	f1.Exception(timeout ...int) (interface{}, bool)
+	// Add Callback to be executed after task is Finised/Canceled
+	f1.AddDoneCallback(callback func(*Future))
 ```
 
 - Supported Features
     - [X] [Fixed thread pools](pools/fixedThreadPool.go)
-    - [X] [Futures](future/future.go)
+    - [X] [Futures](utils/future.go)
 
 ## Todo
 - [ ] Scheduled thread pool
